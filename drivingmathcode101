@@ -1,0 +1,167 @@
+import json
+import os
+#coding at *116* just imported os must use 32 bit to understand help(os) must import os first
+userlogin_file = ('userfile.json')
+
+userdata = []
+taxDepreciation = .86
+def bb():
+    print("$$$$$"*28)
+
+
+
+#the main function that decides whether to load a new user or previous user
+def main():
+    bb()
+    #intro to driver profit math app
+    print("Welcome to Driver Profit Math 2.0")
+    #gets user name
+    print("Is this your first time using the Driver Profit Math 2.0 app? ")
+    #Descion whether it is a return user or not
+    response2 = str.upper(input("Enter YES or NO: "))
+    if response2 == "YES":
+        username = str(input("Please enter your name: "))
+    #welcomes the user by name
+        print("Hello "+ username)
+    else:
+        while response2 == "No" or "NO":
+        #preivious user name information loading
+            previousUsername = str(input("Enter your return username: "))
+            print("Hello " + previousUsername)
+            print("Locating your previous saved information "+ previousUsername)
+            try:
+                with open(userlogin_file, 'r') as uf:
+                    json.load(uf)
+                    print(username.json)
+                    print(totalmoney.json)
+                    for name in uf:
+                        print(userdata + "We have retrived your saved information")
+                        return totalmoney, username
+
+            finally:
+                print("No previous username information found")
+                print("Please start over")
+                response2 == "YES"
+
+
+            bb()
+            return previousUsername
+    #calls function that prompts user to enter daily driving information
+    userinfo(username)
+
+def userinfo(username):
+    bb()
+    print("Please enter the correct information so that we can make valid evaluation of your daily profits " + username)
+    workingMileage = float(input("Please enter the total miles driven while on the clock: "))
+    hoursWorked = float(input("Please enter the how many hours you worked today: "))
+    hourlyPay = float(input("Please enter how much you make per hour: "))
+    tips = float(input("Please enter your total amount of tips: "))
+    vehicleMpg = float(input("Please enter your vehicle MPG in town: "))
+    mileagePay = float(input("Please enter how much you are paid per mile: "))
+    avgGallonofgas = float(input("Please enter the cost of a gallon of gas: "))
+    howMuchprofit = float(input("How much would you like to make per hour: "))
+    #prints the user input for user input verification
+    bb()
+    print("Working Mileage")
+    print(workingMileage)
+    print("Hours Worked")
+    print(hoursWorked)
+    print("Hourly Pay")
+    print(hourlyPay)
+    print("Tips")
+    print(tips)
+    print("Vehicle MPG")
+    print(vehicleMpg)
+    print("Mileage Pay")
+    print(mileagePay)
+    print("The average cost of a gallon of gas")
+    print(avgGallonofgas)
+    print("How much profit that you would like to make")
+    print(howMuchprofit)
+    bb()
+    print("Is all the information on the screen correct?")
+    response = str.upper(input("Please enter YES or NO: "))
+    #Descion block whether the information is correct
+    if response == "YES":
+        bb()
+        #actual profit calculations output
+        print("This is how much you made with your hours worked times how much you make per hour! ")
+        dailypay = hourlyPay * hoursWorked
+        print( dailypay)
+        totalmoney = dailypay + tips
+        print("This is how much you made plus tips today")
+        print(totalmoney)
+        loses = workingMileage * taxDepreciation
+        depreciationDollars = totalmoney - loses
+        print("This is how much you made minus your vehicle depreciation")
+        print(depreciationDollars)
+        print("This is how much you spent in gas")
+        costOFdriving = (workingMileage * avgGallonofgas)// vehicleMpg
+        print(costOFdriving)
+        print("This is you profits minus gas")
+        print(totalmoney - costOFdriving)
+        bb()
+        trueProfits = totalmoney//hourlyPay
+        if trueProfits >= howMuchprofit:
+            #Yes profit
+            print("Profit equals YES! ")
+            print("You made a profit today! " + username)
+            bb()
+            dailypay = str(dailypay)
+            totalmoney = str(totalmoney)
+            depreciationDollars = str(depreciationDollars)
+            costOFdriving = str(costOFdriving)
+            #Yes information list creation
+            userdata = ["YES Profit", username, dailypay, totalmoney, costOFdriving]
+            print(userdata)
+            main()
+            username = userdata
+            #Yes data list information dump
+            with open(userlogin_file, 'a') as uf:
+                json.dumps(userdata, uf)
+                return totalmoney, username
+            userinfo(username)
+            main()
+
+
+        else:
+            #No profit option
+            bb()
+            print("Profit equals No!")
+            print("Sorry "+ username)
+            print("You did not make a profit today there is always tommorow!")
+            print("====="*20)
+            dailypay = str(dailypay)
+            totalmoney = str(totalmoney)
+            depreciationDollars = str(depreciationDollars)
+            costOFdriving = str(costOFdriving)
+            #No profit list creation
+            userdata = ["NO Profit", username, dailypay, totalmoney, costOFdriving]
+            print(userdata)
+            #No profit info dump
+            with open(userlogin_file, 'a') as uf:
+                json.dumps(userdata, uf)
+                return totalmoney, userdata
+            main()
+
+    else:
+        print("Starting over")
+        userinfo(username)
+        main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    main()
+
+main()
